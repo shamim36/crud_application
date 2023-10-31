@@ -104,6 +104,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
     setState(() {});
   }
 
+
   DropdownButton<String> _dropDownMenuItem() {
     return DropdownButton(
       value: FormValues['Qty'],
