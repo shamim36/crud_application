@@ -9,13 +9,13 @@ class ProductCreateScreen extends StatefulWidget {
 }
 
 class _ProductCreateScreenState extends State<ProductCreateScreen> {
-  Map<String, dynamic> FormValues = {
+  Map<String, String> FormValues = {
     "Img": "",
     "ProductCode": "",
     "ProductName": "",
     "Qty": "",
     "TotalPrice": "",
-    "UnitPrice": ""
+    "UnitPrice": "",
   };
 
   @override
@@ -85,7 +85,9 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
                   ),
                   Container(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        FormOnSubmit();
+                      },
                       child: SuccessButtonChild('Submit'),
                       style: ApplyButtonStyle(),
                     ),
@@ -104,6 +106,24 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
     setState(() {});
   }
 
+  FormOnSubmit() {
+
+    if (FormValues['img'] == null) {
+      ErrorToast('Image Link Required !');
+    } else if (FormValues['ProductCode'] == null) {
+      ErrorToast('Product Code Required !');
+    } else if (FormValues['ProductName'] == null) {
+      ErrorToast('Product Name Required !');
+    } else if (FormValues['Qty'] == null) {
+      ErrorToast('Product quantity Required !');
+    } else if (FormValues['TotalPrice'] == null) {
+      ErrorToast('Total Price Required !');
+    } else if (FormValues['UnitPrice'] == null) {
+      ErrorToast('Unit Price Required !');
+    } else {
+      //throw data on rest api
+    }
+  }
 
   DropdownButton<String> _dropDownMenuItem() {
     return DropdownButton(
