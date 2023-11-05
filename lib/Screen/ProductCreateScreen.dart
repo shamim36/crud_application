@@ -1,3 +1,4 @@
+import 'package:crud_application/RestAPI/RestClient.dart';
 import 'package:crud_application/Style/Style.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
     "TotalPrice": "",
     "UnitPrice": "",
   };
+  bool Loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -28,72 +30,84 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
         children: [
           ScreenBackground(context),
           Container(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  TextFormField(
-                    onChanged: (value) {
-                      InputOnChange("Img", value);
-                    },
-                    decoration: AppInputDecoration('Product Image'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    onChanged: (value) {
-                      InputOnChange("ProductName", value);
-                    },
-                    decoration: AppInputDecoration('Product Name'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    onChanged: (value) {
-                      InputOnChange("ProductCode", value);
-                    },
-                    decoration: AppInputDecoration('Product Code'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  AppDropDownStyle(
-                    _dropDownMenuItem(),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    onChanged: (value) {
-                      InputOnChange("UnitPrice", value);
-                    },
-                    decoration: AppInputDecoration('Unit Price'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    onChanged: (value) {
-                      InputOnChange("TotalPrice", value);
-                    },
-                    decoration: AppInputDecoration('Total Price'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        FormOnSubmit();
-                      },
-                      child: SuccessButtonChild('Submit'),
-                      style: ApplyButtonStyle(),
-                    ),
-                  ),
-                ],
-              ),
+            child: Loading
+                ? createCircularProgressIndicator()
+                : createProductFillupForm(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Center createCircularProgressIndicator() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  SingleChildScrollView createProductFillupForm() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          TextFormField(
+            onChanged: (value) {
+              InputOnChange("Img", value);
+            },
+            decoration: AppInputDecoration('Product Image'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            onChanged: (value) {
+              InputOnChange("ProductName", value);
+            },
+            decoration: AppInputDecoration('Product Name'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            onChanged: (value) {
+              InputOnChange("ProductCode", value);
+            },
+            decoration: AppInputDecoration('Product Code'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          AppDropDownStyle(
+            _dropDownMenuItem(),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            onChanged: (value) {
+              InputOnChange("UnitPrice", value);
+            },
+            decoration: AppInputDecoration('Unit Price'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            onChanged: (value) {
+              InputOnChange("TotalPrice", value);
+            },
+            decoration: AppInputDecoration('Total Price'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            child: ElevatedButton(
+              onPressed: () {
+                FormOnSubmit();
+              },
+              child: SuccessButtonChild('Submit'),
+              style: ApplyButtonStyle(),
             ),
           ),
         ],
@@ -102,26 +116,33 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
   }
 
   InputOnChange(key, value) {
-    FormValues.update(key, (value2) => value);
+    FormValues[key] = value;
     setState(() {});
   }
 
-  FormOnSubmit() {
+  FormOnSubmit() async {
+    print(FormValues['img']);
 
-    if (FormValues['img'] == null) {
+    if (FormValues['img'] == '') {
       ErrorToast('Image Link Required !');
-    } else if (FormValues['ProductCode'] == null) {
-      ErrorToast('Product Code Required !');
-    } else if (FormValues['ProductName'] == null) {
+    } else if (FormValues['ProductName'] == '') {
       ErrorToast('Product Name Required !');
-    } else if (FormValues['Qty'] == null) {
+    } else if (FormValues['ProductCode'] == '') {
+      ErrorToast('Product Code Required !');
+    } else if (FormValues['Qty'] == '') {
       ErrorToast('Product quantity Required !');
-    } else if (FormValues['TotalPrice'] == null) {
+    } else if (FormValues['TotalPrice'] == '') {
       ErrorToast('Total Price Required !');
-    } else if (FormValues['UnitPrice'] == null) {
+    } else if (FormValues['UnitPrice'] == '') {
       ErrorToast('Unit Price Required !');
     } else {
-      //throw data on rest api
+      setState(() {
+        Loading = !Loading;
+      });
+      await ProductCreateRequest(FormValues);
+      setState(() {
+        Loading = !Loading;
+      });
     }
   }
 
