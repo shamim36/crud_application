@@ -18,7 +18,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
     "TotalPrice": "",
     "UnitPrice": "",
   };
-  bool Loading = false;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
         children: [
           ScreenBackground(context),
           Container(
-            child: Loading
+            child: isLoading
                 ? createCircularProgressIndicator()
                 : createProductFillupForm(),
           ),
@@ -121,9 +121,9 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
   }
 
   FormOnSubmit() async {
-    print(FormValues['img']);
+    print(FormValues['Img']);
 
-    if (FormValues['img'] == '') {
+    if (FormValues['Img'] == '') {
       ErrorToast('Image Link Required !');
     } else if (FormValues['ProductName'] == '') {
       ErrorToast('Product Name Required !');
@@ -137,11 +137,11 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
       ErrorToast('Unit Price Required !');
     } else {
       setState(() {
-        Loading = !Loading;
+        isLoading = !isLoading;
       });
       await ProductCreateRequest(FormValues);
       setState(() {
-        Loading = !Loading;
+        isLoading = !isLoading;
       });
     }
   }

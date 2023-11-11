@@ -9,6 +9,15 @@ const colorGreen = Color.fromRGBO(33, 191, 115, 1);
 const colorWhite = Color.fromRGBO(196, 183, 183, 0.75);
 const colorDark = Color.fromRGBO(6, 9, 13, 1);
 
+SliverGridDelegateWithFixedCrossAxisCount ProductGridViewStyle() {
+  return const SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    mainAxisSpacing: 2,
+    mainAxisExtent: 250,
+
+  );
+}
+
 SvgPicture ScreenBackground(context) {
   return SvgPicture.asset(
     'assets/images/bdMap.svg',
@@ -68,42 +77,40 @@ DecoratedBox AppDropDownStyle(child) {
   );
 }
 
-void SuccessToast(msg){
+void SuccessToast(msg) {
   Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
-void ErrorToast(msg){
+void ErrorToast(msg) {
   Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0);
 }
 
-ButtonStyle ApplyButtonStyle(){
+ButtonStyle ApplyButtonStyle() {
   return ElevatedButton.styleFrom(
     elevation: 1,
     padding: const EdgeInsets.all(0),
     backgroundColor: Colors.transparent,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6),),
-
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(6),
+    ),
   );
 }
 
-
-Ink SuccessButtonChild(ButtonText){
+Ink SuccessButtonChild(ButtonText) {
   return Ink(
     decoration: BoxDecoration(
       color: colorGreen,
@@ -112,12 +119,14 @@ Ink SuccessButtonChild(ButtonText){
     child: Container(
       height: 45,
       alignment: Alignment.center,
-      child: Text(ButtonText,style: const TextStyle(
-        color: colorDark,
-        fontWeight: FontWeight.bold,
-        fontSize: 17,
-      ),),
+      child: Text(
+        ButtonText,
+        style: const TextStyle(
+          color: colorDark,
+          fontWeight: FontWeight.bold,
+          fontSize: 17,
+        ),
+      ),
     ),
   );
 }
- 
