@@ -1,4 +1,5 @@
 import 'package:crud_application/RestAPI/RestClient.dart';
+import 'package:crud_application/Screen/ProductGridViewScreen.dart';
 import 'package:crud_application/Style/Style.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +61,10 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
 
   Center createCircularProgressIndicator() {
     return const Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+        color: Colors.white70,
+        strokeWidth: 10,
+      ),
     );
   }
 
@@ -92,21 +96,21 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
             height: 20,
           ),
           TextFormField(
-            initialValue: FormValues["Img"],
-            onChanged: (value) {
-              InputOnChange("Img", value);
-            },
-            decoration: AppInputDecoration('Product Image Url'),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextFormField(
             initialValue: FormValues["ProductName"],
             onChanged: (value) {
               InputOnChange("ProductName", value);
             },
             decoration: AppInputDecoration('Product Name'),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            initialValue: FormValues["Img"],
+            onChanged: (value) {
+              InputOnChange("Img", value);
+            },
+            decoration: AppInputDecoration('Product Image Url'),
           ),
           const SizedBox(
             height: 20,
@@ -174,10 +178,10 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
   }
 
   FormOnSubmit() async {
-    if (FormValues['Img'] == '') {
-      ErrorToast('Image Link Required !');
-    } else if (FormValues['ProductName'] == '') {
+    if (FormValues['ProductName'] == '') {
       ErrorToast('Product Name Required !');
+    } else if (FormValues['Img'] == '') {
+      ErrorToast('Image Link Required !');
     } else if (FormValues['ProductCode'] == '') {
       ErrorToast('Product Code Required !');
     } else if (FormValues['Qty'] == '') {
@@ -190,10 +194,18 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
       setState(() {
         isLoading = !isLoading;
       });
-      await ProductCreateRequest(FormValues);
-      setState(() {
-        isLoading = !isLoading;
-      });
+      await ProductUpdateRequest(FormValues, widget.productItem["_id"]);
+      // setState(() {
+      //   Navigator.pushAndRemoveUntil(
+      //       context,
+      //       MaterialPageRoute(builder: (builder) => ProductGridViewScreen()),
+      //       (Route route) => false);
+      //   isLoading = !isLoading;
+      // });
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (builder) => ProductGridViewScreen()),
+          (Route route) => false);
     }
   }
 

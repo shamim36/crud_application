@@ -1,4 +1,5 @@
 import 'package:crud_application/RestAPI/RestClient.dart';
+import 'package:crud_application/Screen/ProductGridViewScreen.dart';
 import 'package:crud_application/Style/Style.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +42,10 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
 
   Center createCircularProgressIndicator() {
     return const Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+        color: Colors.white70,
+        strokeWidth: 10,
+      ),
     );
   }
 
@@ -147,9 +151,13 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
         isLoading = !isLoading;
       });
       await ProductCreateRequest(FormValues);
-      setState(() {
-        isLoading = !isLoading;
-      });
+      // setState(() {
+      //   isLoading = !isLoading;
+      // });
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (builder) => ProductGridViewScreen()),
+          (Route route) => false);
     }
   }
 

@@ -26,6 +26,30 @@ Future<bool> ProductCreateRequest(FormValues) async {
   }
 }
 
+Future<bool> ProductUpdateRequest(FormValues,id) async {
+  var URL = Uri.parse("https://crud.teamrabbil.com/api/v1/UpdateProduct/"+id);
+  var PostBody = json.encode(FormValues);
+  var PostHeader = {"Content-Type": "application/json"};
+
+  try {
+    var response = await http.post(URL, headers: PostHeader, body: PostBody);
+    var ResultCode = response.statusCode;
+    var ResultBody = jsonDecode(response.body);
+
+    if (ResultCode == 200 && ResultBody["status"] == "success") {
+      SuccessToast("Request Success!");
+      return true;
+    } else {
+      ErrorToast("Request Failed: ${ResultBody['message']}");
+      return false;
+    }
+  } catch (e) {
+    print("ProductCreateRequest Error: $e");
+    ErrorToast("Request Failed! Try again.");
+    return false;
+  }
+}
+
 Future<List> ProductGridViewList() async {
   var URL = Uri.parse("https://crud.teamrabbil.com/api/v1/ReadProduct");
   var PostHeader = {"Content-Type": "application/json"};
