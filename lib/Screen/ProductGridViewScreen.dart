@@ -1,6 +1,8 @@
 import 'package:crud_application/RestAPI/RestClient.dart';
 import 'package:crud_application/Screen/ProductCreateScreen.dart';
+import 'package:crud_application/Screen/ProductUpdateScreen.dart';
 import 'package:crud_application/Style/Style.dart';
+import 'package:crud_application/Utility/Utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,19 +34,22 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
           ScreenBackground(context),
           Container(
             child: isLoading
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(
                     color: Colors.white70,
                     strokeWidth: 10,
                   ))
-                : refreshIndicator(),
+                : refreshIndicator(context),
           ),
         ],
       ),
+      floatingActionButton: goToCreateScreen(context),
     );
   }
 
-  RefreshIndicator refreshIndicator() {
+
+
+  RefreshIndicator refreshIndicator(context) {
     return RefreshIndicator(
       onRefresh: () async {
         await CallData();
@@ -102,7 +107,6 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Image.network(ProductList[index]["Img"], fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                // Error occurred, show default image
                 return Image.network(
                   "https://th.bing.com/th/id/OIP.iEE5Pq8P83xrKvMzG3g4GQE8DF?pid=ImgDet&rs=1",
                   fit: BoxFit.cover,
@@ -119,15 +123,13 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                 children: [
                   Expanded(
                     flex: 30,
-                    child: Text(
-                      ProductList[index]["ProductName"],
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                    child:
+                        ProductName(context,index, ProductList[index]["ProductName"]),
                   ),
                   Expanded(
                     flex: 30,
-                    child: Text(
-                        "Price: ${ProductList[index]["UnitPrice"]}.00 BDT"),
+                    child: ProductUnitPrice(
+                        context,index, ProductList[index]["UnitPrice"]),
                   ),
                   SizedBox(height: 5),
                   Expanded(
@@ -135,14 +137,7 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        OutlinedButton(
-                          onPressed: () {},
-                          child: const Icon(
-                            CupertinoIcons.ellipsis_vertical_circle,
-                            size: 18,
-                            color: Colors.green,
-                          ),
-                        ),
+                        goToUpdateScreen(context),
                         SizedBox(width: 4),
                         OutlinedButton(
                           onPressed: () {
@@ -165,6 +160,8 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
       ),
     );
   }
+
+
 
   Future<void> CallData() async {
     setState(() {

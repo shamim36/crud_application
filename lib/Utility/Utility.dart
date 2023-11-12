@@ -1,3 +1,6 @@
+import 'package:crud_application/Screen/ProductCreateScreen.dart';
+import 'package:crud_application/Screen/ProductUpdateScreen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 MySnackBar(msg, context) {
@@ -36,3 +39,57 @@ MyAlertDialog(context) {
         );
       });
 }
+
+  OutlinedButton goToUpdateScreen(context) {
+    return OutlinedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => ProductUpdateScreen(),
+          ),
+        );
+      },
+      child: const Icon(
+        CupertinoIcons.ellipsis_vertical_circle,
+        size: 18,
+        color: Colors.green,
+      ),
+    );
+  }
+
+    FloatingActionButton goToCreateScreen(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (builder) => ProductCreateScreen(),
+          ),
+        );
+      },
+      child: const Icon(Icons.add),
+    );
+  }
+
+  
+  Text ProductName(context, int index, String value) {
+    final productName = value;
+
+    final displayText = productName ?? "null";
+
+    return Text(
+      displayText,
+      style: TextStyle(fontWeight: FontWeight.bold),
+    );
+  }
+
+  Text ProductUnitPrice(context, int index, String value) {
+    final productName = value;
+
+    final displayText = productName ?? "null";
+
+    return Text(
+      "Price: ${displayText}.00 BDT",
+    );
+  }
