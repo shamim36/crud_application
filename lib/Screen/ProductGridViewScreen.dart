@@ -31,25 +31,67 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
         children: [
           ScreenBackground(context),
           Container(
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await CallData();
-              },
-              child: GridView.builder(
-                itemCount: ProductList.length,
-                gridDelegate: ProductGridViewStyle(),
-                itemBuilder: (context, index) {
-                  return CardView(index);
-                },
-              ),
-            ),
+            child: isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                    color: Colors.white70,
+                    strokeWidth: 10,
+                  ))
+                : refreshIndicator(),
           ),
         ],
       ),
     );
   }
 
-  Card CardView(int index) {
+  RefreshIndicator refreshIndicator() {
+    return RefreshIndicator(
+      onRefresh: () async {
+        await CallData();
+      },
+      child: GridView.builder(
+        itemCount: ProductList.length,
+        gridDelegate: ProductGridViewStyle(),
+        itemBuilder: (context, index) {
+          return CardView(index);
+        },
+      ),
+    );
+  }
+
+  DeleteItem(id) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete !'),
+          content: Text('Once delete, you can\'t get it back.'),
+          actions: [
+            OutlinedButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                setState(() {
+                  isLoading = true;
+                });
+                await ProductDeleteRequest(id);
+                CallData();
+              },
+              child: Text('Yes'),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                ErrorToast(" Item Deleted Unsuccessful!");
+              },
+              child: Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Card CardView(index) {
     return Card(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -58,10 +100,14 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
             flex: 60,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Image.network(
-                ProductList[index]["Img"],
-                fit: BoxFit.fill,
-              ),
+              child: Image.network(ProductList[index]["Img"], fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                // Error occurred, show default image
+                return Image.network(
+                  "https://th.bing.com/th/id/OIP.iEE5Pq8P83xrKvMzG3g4GQE8DF?pid=ImgDet&rs=1",
+                  fit: BoxFit.cover,
+                );
+              }),
             ),
           ),
           Expanded(
@@ -80,7 +126,8 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                   ),
                   Expanded(
                     flex: 30,
-                    child: Text("Price: ${ProductList[index]["UnitPrice"]}.00 BDT"),
+                    child: Text(
+                        "Price: ${ProductList[index]["UnitPrice"]}.00 BDT"),
                   ),
                   SizedBox(height: 5),
                   Expanded(
@@ -98,7 +145,9 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                         ),
                         SizedBox(width: 4),
                         OutlinedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            DeleteItem(ProductList[index]["_id"]);
+                          },
                           child: const Icon(
                             CupertinoIcons.delete,
                             size: 18,
