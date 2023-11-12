@@ -104,7 +104,7 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
           Expanded(
             flex: 60,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: Image.network(ProductList[index]["Img"], fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                 return Image.network(
