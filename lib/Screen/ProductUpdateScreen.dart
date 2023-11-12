@@ -65,10 +65,32 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
   }
 
   SingleChildScrollView createProductFillupForm() {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
+          Container(
+            height: height * 0.25,
+            width: width * 0.60,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                child: Image.network(FormValues["Img"]!, fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                  return Image.network(
+                    "https://th.bing.com/th/id/OIP.iEE5Pq8P83xrKvMzG3g4GQE8DF?pid=ImgDet&rs=1",
+                    fit: BoxFit.contain,
+                  );
+                }),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
           TextFormField(
             initialValue: FormValues["Img"],
             onChanged: (value) {
