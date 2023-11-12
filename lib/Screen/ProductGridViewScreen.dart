@@ -137,7 +137,7 @@ class _ProductGridViewScreenState extends State<ProductGridViewScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        goToUpdateScreen(context),
+                        goToUpdateScreen(context,ProductList[index]),
                         SizedBox(width: 4),
                         OutlinedButton(
                           onPressed: () {

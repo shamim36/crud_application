@@ -3,7 +3,8 @@ import 'package:crud_application/Style/Style.dart';
 import 'package:flutter/material.dart';
 
 class ProductUpdateScreen extends StatefulWidget {
-  const ProductUpdateScreen({super.key});
+  final Map productItem;
+  const ProductUpdateScreen(this.productItem);
 
   @override
   State<ProductUpdateScreen> createState() => _ProductUpdateScreenState();
@@ -19,6 +20,24 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
     "UnitPrice": "",
   };
   bool isLoading = false;
+
+  @override
+  void initState() {
+    setState(() {
+      FormValues.update("Img", (value) => widget.productItem["Img"]);
+      FormValues.update(
+          "ProductCode", (value) => widget.productItem["ProductCode"]);
+      FormValues.update(
+          "ProductName", (value) => widget.productItem["ProductName"]);
+      FormValues.update("Qty", (value) => widget.productItem["Qty"]);
+      FormValues.update(
+          "TotalPrice", (value) => widget.productItem["TotalPrice"]);
+      FormValues.update(
+          "UnitPrice", (value) => widget.productItem["UnitPrice"]);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +56,9 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
         ],
       ),
     );
-}
+  }
 
- Center createCircularProgressIndicator() {
+  Center createCircularProgressIndicator() {
     return const Center(
       child: CircularProgressIndicator(),
     );
@@ -51,6 +70,7 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
       child: Column(
         children: [
           TextFormField(
+            initialValue: FormValues["Img"],
             onChanged: (value) {
               InputOnChange("Img", value);
             },
@@ -60,6 +80,7 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
             height: 20,
           ),
           TextFormField(
+            initialValue: FormValues["ProductName"],
             onChanged: (value) {
               InputOnChange("ProductName", value);
             },
@@ -69,6 +90,7 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
             height: 20,
           ),
           TextFormField(
+            initialValue: FormValues["ProductCode"],
             onChanged: (value) {
               InputOnChange("ProductCode", value);
             },
@@ -77,13 +99,21 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
           const SizedBox(
             height: 20,
           ),
-          AppDropDownStyle(
-            _dropDownMenuItem(),
+          // AppDropDownStyle(
+          //   _dropDownMenuItem(),
+          // ),
+          TextFormField(
+            initialValue: FormValues["Qty"],
+            onChanged: (value) {
+              InputOnChange("Qty", value);
+            },
+            decoration: AppInputDecoration('Quantity'),
           ),
           const SizedBox(
             height: 20,
           ),
           TextFormField(
+            initialValue: FormValues["UnitPrice"],
             onChanged: (value) {
               InputOnChange("UnitPrice", value);
             },
@@ -93,6 +123,7 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
             height: 20,
           ),
           TextFormField(
+            initialValue: FormValues["TotalPrice"],
             onChanged: (value) {
               InputOnChange("TotalPrice", value);
             },
@@ -121,8 +152,6 @@ class _ProductUpdateScreenState extends State<ProductUpdateScreen> {
   }
 
   FormOnSubmit() async {
-    print(FormValues['Img']);
-
     if (FormValues['Img'] == '') {
       ErrorToast('Image Link Required !');
     } else if (FormValues['ProductName'] == '') {

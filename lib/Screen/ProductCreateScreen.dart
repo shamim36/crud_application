@@ -40,7 +40,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
   }
 
   Center createCircularProgressIndicator() {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }
@@ -77,8 +77,15 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
           const SizedBox(
             height: 20,
           ),
-          AppDropDownStyle(
-            _dropDownMenuItem(),
+          // AppDropDownStyle(
+          //   _dropDownMenuItem(),
+          // ),
+          TextFormField(
+            initialValue: FormValues["Qty"],
+            onChanged: (value) {
+              InputOnChange("Qty", value);
+            },
+            decoration: AppInputDecoration('Quantity'),
           ),
           const SizedBox(
             height: 20,

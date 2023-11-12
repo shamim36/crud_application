@@ -40,13 +40,13 @@ MyAlertDialog(context) {
       });
 }
 
-  OutlinedButton goToUpdateScreen(context) {
+  OutlinedButton goToUpdateScreen(context, productItem) {
     return OutlinedButton(
       onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (builder) => ProductUpdateScreen(),
+            builder: (builder) => ProductUpdateScreen(productItem),
           ),
         );
       },
