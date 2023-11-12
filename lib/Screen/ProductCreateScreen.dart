@@ -54,7 +54,7 @@ class _ProductCreateScreenState extends State<ProductCreateScreen> {
             onChanged: (value) {
               InputOnChange("Img", value);
             },
-            decoration: AppInputDecoration('Product Image'),
+            decoration: AppInputDecoration('Product Image Url'),
           ),
           const SizedBox(
             height: 20,
